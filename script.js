@@ -73,8 +73,8 @@ document.addEventListener('DOMContentLoaded', function () {
         progressBar.style.width = '0%';
 
         // --- بدء عملية القياس ---
-        var imageAddr = "https://upload.wikimedia.org/wikipedia/commons/3/3a/Bloemen_van_adderwortel_%28Persicaria_bistorta%2C_synoniem%2C_Polygonum_bistorta%29_06-06-2021._%28d.j.b%29.jpg" + "?n=" + Math.random();
-        var downloadSize = 7300000; // حجم الصورة بالبايت
+        var imageAddr = "test-image.jpg" + "?n=" + Math.random();
+var downloadSize = 10568218; // حجم الصورة الجديدة بالبايت (10.0 ميجابايت)
         var startTime, endTime;
         var download = new Image();
 
