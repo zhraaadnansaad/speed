@@ -1,0 +1,234 @@
+/* (3) استيراد الخطوط و (15) تعريف متغيرات الألوان الرسمية */
+:root {
+    --primary-color: #2a6f97; /* أزرق هادئ */
+    --secondary-color: #012a4a; /* كحلي غامق */
+    --background-start: #393E46; /* رمادي غامق */
+    --background-end: #222831; /* أسود قريب */
+    --card-background: rgba(255, 255, 255, 0.05); /* خلفية شبه شفافة للبطاقة */
+    --text-color: #F8F9FA; /* أبيض ناصع */
+    --secondary-text-color: #adb5bd; /* رمادي فاتح */
+    --gauge-base-color: rgba(0, 0, 0, 0.2);
+    --font-family-arabic: 'Cairo', sans-serif;
+    --font-family-english: 'Poppins', sans-serif;
+}
+
+/* (1) خلفية متدرجة هادئة */
+body {
+    font-family: var(--font-family-arabic), var(--font-family-english);
+    background: linear-gradient(135deg, var(--background-start), var(--background-end));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    color: var(--text-color);
+    /* (11) استخدام transition ناعم */
+    transition: background-color 0.5s ease;
+}
+
+.speed-test-container {
+    background-color: var(--card-background);
+    padding: 35px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    transition: all 0.5s ease;
+    backdrop-filter: blur(10px); /* تأثير زجاجي */
+}
+
+h1 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 28px;
+}
+
+.status-message {
+    color: var(--secondary-text-color);
+    min-height: 20px;
+    margin-bottom: 25px;
+    transition: color 0.5s ease;
+}
+
+.speed-gauge {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 20px;
+}
+
+/* (2) تأثير النبض أثناء القياس */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.speed-gauge.testing .gauge-inner {
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.gauge-outer {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gauge-inner {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--background-end), var(--background-start));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: transform 0.5s ease; /* (11) transition */
+}
+
+/* (6) عداد رقمي داخل الدائرة */
+.speed-text {
+    font-size: 42px;
+    font-weight: 700;
+    font-family: var(--font-family-english);
+    color: var(--primary-color);
+    transition: color 0.5s ease;
+}
+
+.speed-unit {
+    font-size: 18px;
+    color: var(--secondary-text-color);
+    margin-top: -5px;
+    font-weight: 500;
+}
+/* ... باقي الكود كما هو ... */
+
+.gauge-circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* --- تعديلات لإصلاح مشكلة العرض على الموبايل --- */
+    width: 100%;
+    height: 100%;
+}
+
+.gauge-base {
+    fill: none;
+    stroke: var(--gauge-base-color);
+}
+
+.gauge-progress {
+    fill: none;
+    stroke: var(--primary-color);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.25, 0.8, 0.5, 1);
+    /* --- تعديلات لإصلاح مشكلة العرض على الموبايل --- */
+    transform: rotate(-90deg);
+    transform-origin: center; /* أو 50% 50% */
+}
+
+/* ... باقي الكود كما هو ... */
+
+/* (7) شريط التحميل */
+.progress-bar-container {
+    width: 80%;
+    height: 6px;
+    background-color: var(--gauge-base-color);
+    border-radius: 3px;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease; /* (11) */
+}
+.progress-bar-container.visible {
+    opacity: 1;
+}
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+    transition: width 1.5s cubic-bezier(0.25, 0.8, 0.5, 1); /* (11) */
+}
+
+.result-text {
+    font-size: 18px;
+    font-weight: 700;
+    min-height: 25px;
+    margin-bottom: 25px;
+    transition: color 0.5s ease;
+}
+/* (4) أزرار أنيقة مع تأثير hover */
+.start-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-family: var(--font-family-arabic);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease; /* (11) */
+    box-shadow: 0 5px 15px rgba(42, 111, 151, 0.3);
+}
+
+.start-button:hover:not(:disabled) {
+    background-color: #3b8ac0; /* لون أفتح عند المرور */
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(42, 111, 151, 0.4);
+}
+
+.start-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.start-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.info-container {
+    margin-top: 30px;
+    color: var(--secondary-text-color);
+    font-size: 13px;
+    line-height: 1.6;
+}
+.info-text { margin: 0; }
+
+/* (10) عبارة الحقوق */
+.site-footer {
+    position: absolute;
+    bottom: 15px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    font-family: var(--font-family-english);
+}
+
+/* (13) تصميم متجاوب للموبايل */
+@media (max-width: 450px) {
+    .speed-test-container {
+        padding: 25px 20px;
+        margin-top: 10vh; /* إعطاء مساحة من الأعلى */
+    }
+    h1 { font-size: 24px; }
+    .speed-gauge { width: 180px; height: 180px; }
+    .gauge-inner { width: 150px; height: 150px; }
+    .speed-text { font-size: 36px; }
+    .start-button { padding: 12px 35px; font-size: 16px; }
+    .site-footer { position: static; margin-top: 30px; }
+}

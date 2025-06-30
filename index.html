@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قياس سرعة الإنترنت | Zahraa Adnan</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%232a6f97' d='M50,10 a40,40 0 1,1 0,80 a40,40 0 1,1 0,-80 M50,20 a30,30 0 1,0 0,60 a30,30 0 1,0 0,-60' /%3E%3Cpath fill='%23ffffff' d='M50 50 L 75 35 A 25 25 0 0 1 75 65 Z'/%3E%3C/svg%3E">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="speed-test-container">
+        <h1>اختبار سرعة الإنترنت</h1>
+        <p id="status-message" class="status-message">اضغط على زر البدء لقياس السرعة</p>
+
+        <<div class="speed-gauge">
+            <div class="gauge-outer">
+                <div class="gauge-inner">
+                    <div id="speed-value" class="speed-text">0.00</div>
+                    <div class="speed-unit">Mbps</div>
+                </div>
+            </div>
+            
+            <svg class="gauge-circle" viewBox="0 0 220 220"> 
+                <circle class="gauge-base" cx="110" cy="110" r="100" stroke-width="12"></circle>
+                <circle id="gauge-progress" class="gauge-progress" cx="110" cy="110" r="100" stroke-width="12"></circle>
+            </svg>
+            </div>
+        
+        <div class="progress-bar-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+
+        <p id="result-text" class="result-text"></p>
+
+        <button id="start-test-button" class="start-button">ابدأ الاختبار</button>
+
+        <div class="info-container">
+            <p id="test-datetime" class="info-text"></p>
+            <p id="connection-type" class="info-text"></p>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <p>© 2025 زهراء عدنان . جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
