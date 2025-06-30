@@ -1,7 +1,5 @@
-// الانتظار حتى يتم تحميل محتوى الصفحة بالكامل
 document.addEventListener('DOMContentLoaded', function () {
 
-    // الحصول على جميع العناصر من الصفحة باستخدام 'var'
     var startTestButton = document.getElementById('start-test-button');
     var speedValueElement = document.getElementById('speed-value');
     var gaugeProgressElement = document.getElementById('gauge-progress');
@@ -13,19 +11,15 @@ document.addEventListener('DOMContentLoaded', function () {
     var testDatetimeElement = document.getElementById('test-datetime');
     var connectionTypeElement = document.getElementById('connection-type');
 
-    // إعدادات دائرة القياس
     var circumference = 2 * Math.PI * gaugeProgressElement.r.baseVal.value;
-    // استخدام دمج النصوص التقليدي بدلاً من القوالب النصية
     gaugeProgressElement.style.strokeDasharray = circumference + ' ' + circumference;
     gaugeProgressElement.style.strokeDashoffset = circumference;
 
-    // دالة لتحديث واجهة الدائرة
     function setProgress(percent) {
         var offset = circumference - (percent / 100) * circumference;
         gaugeProgressElement.style.strokeDashoffset = offset;
     }
 
-    // دالة لعرض نوع الاتصال
     function displayConnectionType() {
         var connectionInfo = "نوع الاتصال: ";
         if (navigator.connection) {
@@ -33,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (navigator.connection.type === 'wifi') {
                 connectionInfo += "Wi-Fi";
             } else if (navigator.connection.type === 'cellular') {
-                // استخدام دمج النصوص التقليدي
                 connectionInfo += 'Cellular (' + type.toUpperCase() + ')';
             } else {
                 connectionInfo += navigator.connection.type || "غير معروف";
@@ -44,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
         connectionTypeElement.textContent = connectionInfo;
     }
 
-    // دالة لتصنيف السرعة وعرض النص المناسب
     function getSpeedCategory(mbps) {
         if (mbps > 50) return { text: "ممتازة", color: "#4ade80" };
         if (mbps > 25) return { text: "جيدة جداً", color: "#86efac" };
@@ -53,50 +45,48 @@ document.addEventListener('DOMContentLoaded', function () {
         return { text: "ضعيفة جداً", color: "#ef4444" };
     }
 
-    // عرض نوع الاتصال عند تحميل الصفحة
     displayConnectionType();
 
-    // إضافة مستمع حدث للزر
     startTestButton.addEventListener('click', function () {
-        // --- مرحلة التحضير للاختبار ---
         startTestButton.disabled = true;
         startTestButton.textContent = 'جاري القياس...';
         speedGauge.classList.add('testing');
         progressBarContainer.classList.add('visible');
         statusMessage.textContent = '... يتم الاتصال بالخادم';
-        
-        // إعادة تعيين القيم
+
         resultText.textContent = '';
         testDatetimeElement.textContent = '';
         speedValueElement.textContent = '0.00';
         setProgress(0);
         progressBar.style.width = '0%';
 
-        // --- بدء عملية القياس ---
         var imageAddr = "test-image.jpg" + "?n=" + Math.random();
-var downloadSize = 10568218; // حجم الصورة الجديدة بالبايت (10.0 ميجابايت)
-        var startTime, endTime;
-        var download = new Image();
+        var downloadSize = 10485760; // 10MB
+        var startTime = new Date().getTime();
 
-        download.onload = function () {
-            endTime = new Date().getTime();
-            statusMessage.textContent = '... يتم حساب النتائج';
-            showResults();
-        };
-        download.onerror = function () {
-            statusMessage.textContent = "فشل الاختبار. حاول مرة أخرى.";
-            speedGauge.classList.remove('testing');
-            startTestButton.disabled = false;
-            startTestButton.textContent = 'ابدأ الاختبار';
-            progressBarContainer.classList.remove('visible');
-        };
-
-        startTime = new Date().getTime();
         statusMessage.textContent = '... جاري تنزيل ملف الاختبار';
-        download.src = imageAddr;
 
-        // --- دالة عرض النتائج ---
-        function showResults() {
+        fetch(imageAddr)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("فشل تحميل الملف");
+                }
+                return response.blob();
+            })
+            .then(function (blob) {
+                var endTime = new Date().getTime();
+                statusMessage.textContent = '... يتم حساب النتائج';
+                showResults(startTime, endTime);
+            })
+            .catch(function (error) {
+                statusMessage.textContent = "فشل الاختبار. حاول مرة أخرى.";
+                speedGauge.classList.remove('testing');
+                startTestButton.disabled = false;
+                startTestButton.textContent = 'ابدأ الاختبار';
+                progressBarContainer.classList.remove('visible');
+            });
+
+        function showResults(startTime, endTime) {
             var duration = (endTime - startTime) / 1000;
             var bitsLoaded = downloadSize * 8;
             var speedBps = bitsLoaded / duration;
@@ -114,22 +104,20 @@ var downloadSize = 10568218; // حجم الصورة الجديدة بالباي�
                 if (currentSpeed >= speedMbps) {
                     currentSpeed = speedMbps;
                     clearInterval(interval);
-                    
+
                     speedGauge.classList.remove('testing');
                     startTestButton.disabled = false;
                     startTestButton.textContent = 'إجراء اختبار جديد';
                     statusMessage.textContent = 'تم القياس بنجاح!';
-                    
+
                     var category = getSpeedCategory(speedMbps);
-                    // استخدام دمج النصوص التقليدي
                     resultText.textContent = 'السرعة: ' + category.text;
                     resultText.style.color = category.color;
 
                     var now = new Date();
-                    // استخدام دمج النصوص التقليدي
                     testDatetimeElement.textContent = 'تاريخ القياس: ' + now.toLocaleString('ar-IQ');
-                    
-                    setTimeout(function() {
+
+                    setTimeout(function () {
                         progressBarContainer.classList.remove('visible');
                     }, 2000);
                 }
